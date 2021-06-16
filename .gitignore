@@ -1,0 +1,4 @@
+.vscode/
+venv/
+Bible_transformed.txt
+bdp.json
