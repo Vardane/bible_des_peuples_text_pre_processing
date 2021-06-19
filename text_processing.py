@@ -1,6 +1,7 @@
 import json
 
 with open('Bible_transformed.txt', 'r') as fichier:
+# with open('essai.txt', 'r') as fichier:
     contenu = fichier.read()
     as_list = list(contenu)
     # print(contenu)
@@ -11,7 +12,7 @@ verse_dict = dict()
 #     'verse_pk':
 #     {'book_name': [],
 #     'part_name': [],
-#     'chapter_name': [],
+#     'section_name': [],
 #     'chapter_number': [],
 #     'verse_number': [],
 #     'verse': []
@@ -21,7 +22,7 @@ verse_dict = dict()
 # list of characters/digits making up the name/number of...
 book_chars = []
 part_chars = []
-chapter_chars = []
+section_chars = []
 chapter_digits = []
 verse_digits = []
 verse_chars = []
@@ -57,16 +58,21 @@ while j < 4863230: #133813:#< 4863230:
         part_chars = []
 
     elif  as_list[j] == "§":
-        # chapter name
+        # section name (may be the name of a chapter or 
+        # the name of a subsection in a chapter)
         while as_list[j] != '\n':
-            chapter_chars.append(as_list[j])
-            j = j + 1
+            section_chars.append(as_list[j])
+            j = j + 1    
             # as_list = as_list[j] 
-        chapter_name_ = ('').join(chapter_chars)
+        section_name_ = ('').join(section_chars)
         j = j + 1
+        if as_list[j] == '\n':
+            # case when there is an empty line below the section name
+            # so two '\n' in a row
+                j = j + 1
         # as_list = as_list[j] 
         # cleanup
-        chapter_chars = []
+        section_chars = []
     
     elif  as_list[j] == "¤":
         j = j + 1
@@ -110,7 +116,7 @@ while j < 4863230: #133813:#< 4863230:
         verse_dict[pk] = {}
         verse_dict[pk]['book_name'] = book_name_
         verse_dict[pk]['part_name'] = part_name_
-        verse_dict[pk]['chapter_name'] = chapter_name_
+        verse_dict[pk]['section_name'] = section_name_
         try:
             verse_dict[pk]['chapter_number'] = int(chapter_number_)
         except ValueError as erreur:
