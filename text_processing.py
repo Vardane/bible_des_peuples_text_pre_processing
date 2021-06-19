@@ -29,7 +29,7 @@ verse_chars = []
 j = 0
 pk = 1
 
-while j < 5000: #4863230:
+while j < 4863230: #133813:#< 4863230:
 
 # for j, as_list ias_list enumerate(as_list):
     if as_list[j] == "{":
@@ -45,7 +45,7 @@ while j < 5000: #4863230:
         # cleanup
         book_chars = []
 
-    if  (as_list[j] == "§" and as_list[j+1] == "|"):
+    elif  (as_list[j] == "§" and as_list[j+1] == "|"):
         # part (subsectioas_list withias_list a book)
         while as_list[j] != '\n':
             part_chars.append(as_list[j])
@@ -56,7 +56,7 @@ while j < 5000: #4863230:
         # cleanup
         part_chars = []
 
-    if  as_list[j] == "§":
+    elif  as_list[j] == "§":
         # chapter name
         while as_list[j] != '\n':
             chapter_chars.append(as_list[j])
@@ -68,10 +68,10 @@ while j < 5000: #4863230:
         # cleanup
         chapter_chars = []
     
-    if  as_list[j] == "¤":
+    elif  as_list[j] == "¤":
         j = j + 1
         # chapter number
-        while as_list[j] != ' ':
+        while as_list[j] not in [' ', '\n']:
             chapter_digits.append(as_list[j])
             j = j + 1
             # as_list = as_list[j] 
@@ -81,7 +81,7 @@ while j < 5000: #4863230:
         # cleanup
         chapter_digits = []
 
-    if  as_list[j] == "°":
+    elif  as_list[j] == "°":
         j = j + 1
         # verse number
         while as_list[j] != ' ':
@@ -99,7 +99,7 @@ while j < 5000: #4863230:
         while as_list[j] not in ["°", "¤", "§"]:
             verse_chars.append(as_list[j])
             j = j + 1
-            # as_list = as_list[j] 
+            # as_list = as_list[j]  
         verse_ = ('').join(verse_chars)
         # j = j + 1
         # as_list = as_list[j] 
@@ -111,11 +111,31 @@ while j < 5000: #4863230:
         verse_dict[pk]['book_name'] = book_name_
         verse_dict[pk]['part_name'] = part_name_
         verse_dict[pk]['chapter_name'] = chapter_name_
-        verse_dict[pk]['chapter_number'] = int(chapter_number_)
-        verse_dict[pk]['verse_number'] = int(verse_number_)
+        try:
+            verse_dict[pk]['chapter_number'] = int(chapter_number_)
+        except ValueError as erreur:
+            print(f'chapter number error: {erreur} at verse with pk {pk}')
+            verse_dict[pk]['chapter_number'] = chapter_number_
+        try:
+            verse_dict[pk]['verse_number'] = int(verse_number_)
+        except ValueError as erreur:
+            print(f'verse number error: {erreur} at verse with pk {pk}')
+            verse_dict[pk]['verse_number'] = verse_number_
         verse_dict[pk]['verse'] = verse_
 
+        print(f'Verse number {verse_number_} in chapter {chapter_number_} \
+        in book {book_name_} has been processed.' )
+        print(f'We are at character {j}')
+
         pk = pk + 1
+
+    print(f'cycle terminé; prochain verset: {pk}')
+    sentence = ''   
+    for k in range (-30, 1):
+        sentence = ('').join([sentence, as_list[j+k]])
+    print(sentence)
+
+print(f'halte du traitement; prochain verset: {pk}')
 
 # Dumping dictionary to jsoas_list file
 with open('bdp.json', 'w') as json_file:
