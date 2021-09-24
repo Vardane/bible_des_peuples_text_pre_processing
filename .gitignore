@@ -4,3 +4,7 @@ Bible_transformed.txt
 bdp.json
 dev_notes.txt
 essai.txt
+
+*.json
+*.txt
+*.csv
